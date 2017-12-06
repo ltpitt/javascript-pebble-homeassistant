@@ -1,0 +1,87 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "d.nastri@gmail.com",
+    "longName": "Home Assistant",
+    "projectType": "pebblejs",
+    "resources": {
+        "media": [
+            {
+                "file": "images/menu_icon.png",
+                "name": "IMAGE_MENU_ICON",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/logo_splash.png",
+                "name": "IMAGE_LOGO_SPLASH",
+                "type": "bitmap"
+            },
+            {
+                "file": "images/tile_splash.png",
+                "name": "IMAGE_TILE_SPLASH",
+                "type": "bitmap"
+            },
+            {
+                "file": "fonts/UbuntuMono-Regular.ttf",
+                "name": "MONO_FONT_14",
+                "type": "font"
+            },
+            {
+                "file": "images/thermometer_black_icon.png",
+                "name": "IMAGES_THERMOMETER_BLACK_ICON_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/microphone_black_icon.png",
+                "name": "IMAGES_MICROPHONE_BLACK_ICON_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/lightbulb_black_icon.png",
+                "name": "IMAGES_LIGHTBULB_BLACK_ICON_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/microphone_white_icon.png",
+                "name": "IMAGES_MICROPHONE_WHITE_ICON_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/thermometer_white_icon.png",
+                "name": "IMAGES_THERMOMETER_WHITE_ICON_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/lightbulb_white_icon.png",
+                "name": "IMAGES_LIGHTBULB_WHITE_ICON_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/splash.png",
+                "name": "IMAGES_SPLASH_PNG",
+                "type": "png"
+            },
+            {
+                "file": "images/app_icon.png",
+                "menuIcon": true,
+                "name": "IMAGES_APP_ICON_PNG",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "Home Assistant",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "487d431e-f321-44fb-93e7-ff1cf8667d96",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "hiddenApp": false,
+        "watchface": false
+    }
+}

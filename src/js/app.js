@@ -1,0 +1,351 @@
+/**
+ * Home Assistant
+ * 
+ * This Pebble App displays and changes
+ * Homeassistant data
+ * 
+ * Davide Nastri, 11/16/2017
+ */
+
+var UI = require('ui');
+var ajax = require('ajax');
+var vibe = require('ui/vibe');
+var Voice = require('ui/voice');
+var temperature;
+var humidity;
+var thermostateTemperature;
+var thermostateStatus;
+var upstairsLightsStatus;
+var downstairsLightsStatus;
+var thermostateData;
+var splashScreen = new UI.Card({
+    banner: 'images/splash.png'
+});
+var ajax = require('ajax');
+
+
+
+var mainCard = new UI.Card({
+    //title: 'Home Assistant',
+    //titleColor: 'sunset-orange', // Named string
+    //subtitle: 'Color',
+    //subtitleColor: '#00dd00', // 6-digit Hexadecimal string
+    body: 'Loading data...',
+    bodyColor: 0x9a0036, // 6-digit Hexadecimal number
+    style: 'mono',
+    action: {
+        backgroundColor: 'black',
+        up: 'images/lightbulb_white_icon.png',
+        select: 'images/thermometer_white_icon.png',
+        down: 'images/microphone_white_icon.png'
+    }
+});
+
+var bulbMenu = new UI.Menu({
+    sections: [{
+        items: [{
+            title: 'Upstairs',
+            subtitle: 'Toggle lights'
+        }, {
+            title: 'Stairs Lamp',
+            subtitle: 'Toggle Stairs Lamp'
+        }, {
+            title: 'Pc Lamp',
+            subtitle: 'Toggle Pc Lamp'
+        }, {
+            title: 'Bedroom Leds',
+            subtitle: 'Toggle Bedroom Leds'
+        }, {
+            title: 'Bedroom Light',
+            subtitle: 'Toggle Bedroom Light'
+        }, {
+            title: 'Downstairs',
+            subtitle: 'Toggle lights'
+        }, {
+            title: 'Tv Lamp',
+            subtitle: 'Toggle Tv Lamp'
+        }, {
+            title: 'Sofa Lamp',
+            subtitle: 'Toggle Sofa Lamp'
+        }, {
+            title: 'Gaming',
+            subtitle: 'Time to play'
+        }, {
+            title: 'Goodnight',
+            subtitle: 'Sleep tight'
+        }, {
+            title: 'Gaia sleep mode',
+            subtitle: '<3 Ninna Gaia <3'
+        }]
+    }]
+});
+
+bulbMenu.on('select', function(e) {
+    switch (e.item.title) {
+        case "Upstairs":
+            servicesAjaxCall('internet_button_1/1/unreal');
+            break;
+        case "Stairs Lamp":
+            homeAssistantAjaxCall('switch', 'toggle', {
+                "entity_id": "switch.stairs"
+            });
+            break;
+        case "Pc Lamp":
+            homeAssistantAjaxCall('switch', 'toggle', {
+                "entity_id": "switch.pc"
+            });
+            break;
+        case "Bedroom Leds":
+            homeAssistantAjaxCall('switch', 'toggle', {
+                "entity_id": "switch.bedroom"
+            });
+            break;
+        case "Bedroom Lamp":
+            homeAssistantAjaxCall('lamp', 'toggle', {
+                "entity_id": "lamp.shower"
+            });
+            break;
+        case "Downstairs":
+            servicesAjaxCall('internet_button_1/3/unreal');
+            break;
+        case "Tv Lamp":
+            homeAssistantAjaxCall('light', 'toggle', {
+                "entity_id": "light.tv"
+            });
+            break;
+        case "Sofa Lamp":
+            homeAssistantAjaxCall('light', 'toggle', {
+                "entity_id": "light.lamp"
+            });
+            break;
+        case "Gaming":
+            servicesAjaxCall('internet_button_1/4/unreal');
+            break;
+        case "Goodnight":
+            servicesAjaxCall('internet_button_1/2/unreal');
+            break;
+        case "Gaia sleep mode":
+            servicesAjaxCall('internet_button_2/3/unreal');
+            break;
+    }
+});
+
+
+mainCard.on('accelTap', function(e) {
+    vibe.vibrate('short');
+    console.log('Shake detected.');
+    updateData();
+});
+
+mainCard.on('show', function(e) {
+    console.log('mainCard show detected.');
+    updateData();
+});
+
+mainCard.on('click', function(e) {
+    switch (e.button) {
+        case 'up':
+            bulbMenu.show();
+            console.log('Up press on mainCard detected');
+            break;
+        case 'select':
+            console.log('Select press on mainCard detected');
+            break;
+        case 'down':
+            getUserVoice();
+            console.log('Down press on mainCard detected');
+            break;
+        default:
+            console.log('Error in mainCard button click');
+    }
+});
+
+function updateData() {
+    console.log('Updating data...');
+    mainCard.body('Loading...');
+    ajax({
+            url: updateDataUrl,
+            type: 'json'
+        },
+        function(data) {
+            temperature = data.current_temperature;
+            thermostateTemperature = data.set_temperature;
+            thermostateStatus = data.thermostate;
+            upstairsLightsStatus = data.upstairs_lights;
+            downstairsLightsStatus = data.living_room_lights;
+            humidity = data.humidity;
+            thermostateData = thermostateTemperature + ' ' + thermostateStatus;
+            mainCard.body('Lights\nUp:  ' + upstairsLightsStatus + '\nDow: ' + downstairsLightsStatus + '\n\nThermostate\nNow: ' + temperature + '\nSet: ' + thermostateData);
+            console.log('\nNow: ' + temperature + '\nSet: ' + thermostateData + '\nUp:  ' + upstairsLightsStatus + '\nDow: ' + downstairsLightsStatus);
+            return data;
+        }
+    );
+}
+
+function homeAssistantAjaxCall(domain, service, serviceData) {
+    vibe.vibrate('short');
+    ajax({
+            url: homeAssistantUrl + '/api/services/' + domain + '/' + service,
+            method: 'post',
+            data: serviceData,
+            type: 'json',
+            headers: homeAssistantHeaders
+        },
+        function(data) {
+            console.log(data);
+            vibe.vibrate('short');
+            showMessage('Result', 'Request was successful', '');
+        },
+        function(error) {
+            vibe.vibrate('short');
+            vibe.vibrate('short');
+            vibe.vibrate('short');
+            showMessage('Result', 'Request returned an error', error);
+        }
+    );
+}
+
+function particlePhotonAjaxCall(command, parameters) {
+    vibe.vibrate('short');
+    var mydata = {
+        access_token: particleTokenID,
+        args: parameters
+    };
+    ajax({
+            url: 'https://api.particle.io/v1/devices/' + particleDeviceID + '/' + command,
+            method: 'post',
+            data: mydata
+        },
+        function(data) {
+            data = JSON.parse(data);
+            if (data.return_value == 1) {
+                vibe.vibrate('short');
+                showMessage('Result', 'Request was successful', 'Command was sent without any problem');
+            } else {
+                vibe.vibrate('short');
+                vibe.vibrate('short');
+                vibe.vibrate('short');
+                showMessage('Result', 'Request returned an error', data);
+            }
+        },
+        function(error) {
+            vibe.vibrate('short');
+            vibe.vibrate('short');
+            vibe.vibrate('short');
+            showMessage('Result', 'Request returned an error', error);
+        }
+    );
+}
+
+function servicesAjaxCall(command, parameters) {
+    console.log('Starting Services Ajax Call');
+    vibe.vibrate('short');
+    ajax({
+            url: 'http://www.davidenastri.it:8080/' + command,
+            method: 'get'
+        },
+        function(data) {
+            console.log(data);
+            data = JSON.parse(data);
+            if (data.return_value == 1) {
+                vibe.vibrate('short');
+                showMessage('Result', 'Request was successful', '');
+            } else {
+                vibe.vibrate('short');
+                vibe.vibrate('short');
+                vibe.vibrate('short');
+                showMessage('Result', 'Request returned an error', data);
+            }
+        },
+        function(error) {
+            vibe.vibrate('short');
+            vibe.vibrate('short');
+            vibe.vibrate('short');
+            showMessage('Result', 'Request returned an error', error);
+        }
+    );
+}
+
+function showMessage(title, subtitle, body) {
+    var card = new UI.Card();
+    card.title(title);
+    card.subtitle(subtitle);
+    card.body(body);
+    card.show();
+    card.style('small');
+    setTimeout(function() {
+        card.hide();
+        updateData();
+    }, 3000);
+}
+
+function getUserVoice() {
+    console.log('Getting user voice...');
+    // Start a diction session and skip confirmation
+    Voice.dictate('start', true, function(e) {
+        if (e.err) {
+            console.log('Error: ' + e.err);
+            return;
+        }
+        showMessage('Voice recognized', '', e.transcription);
+        parseVoiceInputText(e.transcription);
+        return e.transcription;
+    });
+
+}
+
+function parseVoiceInputText(textString) {
+    var myRegexp = /^(accendi|spegni|attiva).*(luce|luci|computer|riscaldamento|scena).*?(gaming|studio|soggiorno|scale|camera da letto|soggiorno|gaia|tv|divano)?$/g;
+    var match = myRegexp.exec(textString.toLowerCase());
+    try {
+        var verb = match[1];
+        var object = match[2];
+        var location = match[3];
+        console.log("Voice command received: " + verb + " " + object + " " + location);
+        switch (true) {
+            case ((verb === 'accendi' || verb === 'spegni') && (object === 'luci') && (location === 'soggiorno')):
+                servicesAjaxCall('internet_button_1/3/unreal');
+                break;
+            case ((verb === 'accendi' || verb === 'spegni') && (object === 'luci') && (location === 'camera da letto')):
+                servicesAjaxCall('internet_button_1/1/unreal');
+                break;
+            case ((verb === 'attiva') && (object === 'scena') && (location === 'gaia')):
+                servicesAjaxCall('internet_button_2/3/unreal');
+                break;
+            case ((verb === 'attiva') && (object === 'scena') && (location === 'gaming')):
+                servicesAjaxCall('internet_button_1/4/unreal');
+                break;
+            case ((verb === 'accendi' || verb === 'spegni') && (object === 'luce') && (location === 'tv')):
+                homeAssistantAjaxCall('light', 'toggle', {
+                    "entity_id": "light.tv"
+                });
+                break;          
+            case ((verb === 'accendi' || verb === 'spegni') && (object === 'luce') && (location === 'divano')):
+                homeAssistantAjaxCall('light', 'toggle', {
+                    "entity_id": "light.lamp"
+                });
+                break;          
+          default:
+                showMessage('Non capisco', 'Ecco alcuni esempi', 'Attiva la scena gaming\nAccendi le luci in soggiorno\nAccendi le luci in camera da letto');
+                break;
+        }
+    } catch (err) {
+        showMessage('Non capisco', 'Ecco alcuni esempi', 'Attiva la scena gaming\nAccendi le luci in soggiorno\nAccendi le luci in camera da letto');
+    }
+    return;
+}
+
+updateData();
+
+setTimeout(function() {
+    splashScreen.hide();
+    mainCard.show();
+}, 2500);
+
+splashScreen.show();
+
+
+// Set Interval Snippet
+//setInterval(function(){ 
+//  updateData();
+//}, 5000);
