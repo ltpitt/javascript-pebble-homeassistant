@@ -23,7 +23,11 @@ var splashScreen = new UI.Card({
 });
 var ajax = require('ajax');
 
-
+var updateDataUrl = 'UPDATE_DATA_URL';
+var homeAssistantUrl = 'HOME_ASSISTANT_URL';
+var particleDeviceID = 'PARTICLE_DEVICE_ID';
+var particleTokenID = 'PARTICLE_TOKEN_ID';
+var homeAssistantHeaders = "HOME_ASSISTANT_HEADERS";
 
 var mainCard = new UI.Card({
     //title: 'Home Assistant',
