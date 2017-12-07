@@ -29,6 +29,7 @@ var particleDeviceID = 'PARTICLE_DEVICE_ID';
 var particleTokenID = 'PARTICLE_TOKEN_ID';
 var homeAssistantHeaders = "HOME_ASSISTANT_HEADERS";
 
+
 var mainCard = new UI.Card({
     //title: 'Home Assistant',
     //titleColor: 'sunset-orange', // Named string
@@ -134,6 +135,24 @@ bulbMenu.on('select', function(e) {
     }
 });
 
+var thermostateMenu = new UI.Menu({
+    sections: [{
+        items: [{
+            title: 'Thermostate on',
+            subtitle: 'Turn thermostate on'
+        }, {
+            title: 'Thermostate off',
+            subtitle: 'Turn thermostate off'
+        }, {
+            title: 'Raise temperature',
+            subtitle: 'Raise by 0.5 Celsius'
+        }, {
+            title: 'Lower temperature',
+            subtitle: 'Lower by 0.5 Celsius'
+        }]
+    }]
+});
+
 
 mainCard.on('accelTap', function(e) {
     vibe.vibrate('short');
@@ -154,6 +173,7 @@ mainCard.on('click', function(e) {
             break;
         case 'select':
             console.log('Select press on mainCard detected');
+            thermostateMenu.show();
             break;
         case 'down':
             getUserVoice();
