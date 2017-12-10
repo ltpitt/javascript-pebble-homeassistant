@@ -29,7 +29,6 @@ var particleDeviceID = 'PARTICLE_DEVICE_ID';
 var particleTokenID = 'PARTICLE_TOKEN_ID';
 var homeAssistantHeaders = "HOME_ASSISTANT_HEADERS";
 
-
 var mainCard = new UI.Card({
     //title: 'Home Assistant',
     //titleColor: 'sunset-orange', // Named string
@@ -153,9 +152,33 @@ var thermostateMenu = new UI.Menu({
     }]
 });
 
+thermostateMenu.on('select', function(e) {
+    switch (e.item.title) {
+        case "Thermostate on":
+            homeAssistantAjaxCall('climate', 'set_operation_mode', {
+                "operation_mode": "auto"
+            });
+            break;
+        case "Thermostate off":
+            homeAssistantAjaxCall('climate', 'set_operation_mode', {
+                "operation_mode": "off"
+            });
+            break;
+        case "Raise temperature":
+            homeAssistantAjaxCall('climate', 'set_temperature', {
+                "temperature": thermostateTemperature + 0.5
+            });
+            break;
+        case "Lower temperature":
+            homeAssistantAjaxCall('climate', 'set_temperature', {
+                "temperature": thermostateTemperature - 0.5
+            });
+            break;
+    }
+});
 
 mainCard.on('accelTap', function(e) {
-    vibe.vibrate('short');
+    //vibe.vibrate('short');
     console.log('Shake detected.');
     updateData();
 });
