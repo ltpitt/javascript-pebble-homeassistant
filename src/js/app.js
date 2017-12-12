@@ -14,6 +14,7 @@ var Voice = require('ui/voice');
 var temperature;
 var humidity;
 var thermostateTemperature;
+var newThermostateTemperature;
 var thermostateStatus;
 var upstairsLightsStatus;
 var downstairsLightsStatus;
@@ -165,13 +166,17 @@ thermostateMenu.on('select', function(e) {
             });
             break;
         case "Raise temperature":
+            newThermostateTemperature = parseFloat(thermostateTemperature);
+            newThermostateTemperature = newThermostateTemperature + 0.5;
             homeAssistantAjaxCall('climate', 'set_temperature', {
-                "temperature": thermostateTemperature + 0.5
+                "temperature": String(newThermostateTemperature)
             });
             break;
         case "Lower temperature":
+            newThermostateTemperature = parseFloat(thermostateTemperature);
+            newThermostateTemperature = newThermostateTemperature - 0.5;
             homeAssistantAjaxCall('climate', 'set_temperature', {
-                "temperature": thermostateTemperature - 0.5
+                "temperature": String(newThermostateTemperature)
             });
             break;
     }
