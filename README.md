@@ -10,7 +10,7 @@ App images
 </p>
 
 <p align="center">
-<img src="/resources/images/jeeves_pebble_app_lightbulb_menu.png" width="25%"><img src="jeeves_pebble_app_thermostate_menu.png" width="25%"><img src="/resources/images/jeeves_pebble_app_microphone.png" width="25%">
+<img src="/resources/images/jeeves_pebble_app_lightbulb_menu.png" width="25%"><img src="/resources/images/jeeves_pebble_app_thermostate_menu.png" width="25%"><img src="/resources/images/jeeves_pebble_app_microphone.png" width="25%">
 </p>
 
 Pre-requisites
