@@ -106,7 +106,7 @@ bulbMenu.on('select', function(e) {
             });
             break;
         case "Bedroom Lamp":
-            homeAssistantAjaxCall('lamp', 'toggle', {
+            homeAssistantAjaxCall('light', 'toggle', {
                 "entity_id": "lamp.shower"
             });
             break;
