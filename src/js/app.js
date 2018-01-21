@@ -48,6 +48,7 @@ var mainCard = new UI.Card({
 
 var bulbMenu = new UI.Menu({
     sections: [{
+        title: 'Upstairs',
         items: [{
             title: 'Upstairs',
             subtitle: 'Toggle lights'
@@ -61,7 +62,7 @@ var bulbMenu = new UI.Menu({
             title: 'Bedroom Leds',
             subtitle: 'Toggle Bedroom Leds'
         }, {
-            title: 'Bedroom Light',
+            title: 'Bedroom Lamp',
             subtitle: 'Toggle Bedroom Light'
         }, {
             title: 'Downstairs',
