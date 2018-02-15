@@ -158,7 +158,7 @@ thermostateMenu.on('select', function(e) {
     switch (e.item.title) {
         case "Thermostate on":
             homeAssistantAjaxCall('climate', 'set_operation_mode', {
-                "operation_mode": "auto"
+                "operation_mode": "heat"
             });
             break;
         case "Thermostate off":
