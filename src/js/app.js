@@ -213,6 +213,10 @@ mainCard.on('click', function(e) {
     }
 });
 
+function strPad(n) {
+    return String("00" + n).slice(-2);
+}
+
 function updateData() {
     console.log('Updating data...');
     mainCard.body('Loading...');
@@ -228,7 +232,12 @@ function updateData() {
             downstairsLightsStatus = data.living_room_lights;
             humidity = data.humidity;
             thermostateData = thermostateTemperature + ' ' + thermostateStatus;
-            mainCard.body('Lights\nUp:  ' + upstairsLightsStatus + '\nDow: ' + downstairsLightsStatus + '\n\nThermostate\nNow: ' + temperature + '\nSet: ' + thermostateData);
+            var currentDate = new Date();
+            var currentDay = strPad(currentDate.getDay());
+            var currentMonth = strPad(currentDate.getMonth());
+            var currentYear = currentDate.getFullYear().toString().substr(-2);
+            var currentDateString = currentDay + '/' + currentMonth + '/' + currentYear;
+            mainCard.body('   ' + currentDateString + '\n\nLights\nUp:  ' + upstairsLightsStatus + '\nDow: ' + downstairsLightsStatus + '\n\nThermostate\nNow: ' + temperature + '\nSet: ' + thermostateData);
             console.log('\nNow: ' + temperature + '\nSet: ' + thermostateData + '\nUp:  ' + upstairsLightsStatus + '\nDow: ' + downstairsLightsStatus);
             return data;
         }
