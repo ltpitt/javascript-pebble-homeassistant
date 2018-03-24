@@ -214,7 +214,7 @@ mainCard.on('click', function(e) {
 });
 
 function strPad(n) {
-    return String("00" + n).slice(-2);
+    return String("0" + n).slice(-2);
 }
 
 function updateData() {
@@ -233,8 +233,8 @@ function updateData() {
             humidity = data.humidity;
             thermostateData = thermostateTemperature + ' ' + thermostateStatus;
             var currentDate = new Date();
-            var currentDay = strPad(currentDate.getDay());
-            var currentMonth = strPad(currentDate.getMonth());
+            var currentDay = strPad(currentDate.getDate());
+            var currentMonth = strPad(currentDate.getMonth()+1);
             var currentYear = currentDate.getFullYear().toString().substr(-2);
             var currentDateString = currentDay + '/' + currentMonth + '/' + currentYear;
             mainCard.body('   ' + currentDateString + '\n\nLights\nUp:  ' + upstairsLightsStatus + '\nDow: ' + downstairsLightsStatus + '\n\nThermostate\nNow: ' + temperature + '\nSet: ' + thermostateData);
