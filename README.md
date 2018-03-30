@@ -17,6 +17,7 @@ Pre-requisites
 --------------
 
 - A Pebble smartwatch (you should totally get one! Pebble went out of business :( and they're crazy cheap now!)
+- Be sure to customize the variables at the beginning of app.js containing personal data (homeassistant password and such)
 
 Getting Started
 ---------------
