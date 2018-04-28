@@ -169,14 +169,18 @@ thermostateMenu.on('select', function(e) {
         case "Raise temperature":
             newThermostateTemperature = parseFloat(thermostateTemperature);
             newThermostateTemperature = newThermostateTemperature + 0.5;
-            homeAssistantAjaxCall('climate', 'set_temperature', {
-                "temperature": String(newThermostateTemperature)
+            console.log('Current temp: ' + String(thermostateTemperature));
+            console.log('New temp: ' + String(newThermostateTemperature));
+            homeAssistantAjaxCall('climate', 'set_temperature', {               
+              "entity_id": "climate.toon_van_eneco",
+              "temperature": String(newThermostateTemperature)
             });
             break;
         case "Lower temperature":
             newThermostateTemperature = parseFloat(thermostateTemperature);
             newThermostateTemperature = newThermostateTemperature - 0.5;
             homeAssistantAjaxCall('climate', 'set_temperature', {
+                "entity_id": "climate.toon_van_eneco",
                 "temperature": String(newThermostateTemperature)
             });
             break;
