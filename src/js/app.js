@@ -228,20 +228,22 @@ function updateData() {
             type: 'json'
         },
         function(data) {
-            temperature = data.current_temperature;
-            thermostateTemperature = data.set_temperature;
-            thermostateStatus = data.thermostate;
+            // temperature = data.current_temperature;
+            // thermostateTemperature = data.set_temperature;
+            // thermostateStatus = data.thermostate;
             upstairsLightsStatus = data.upstairs_lights;
             downstairsLightsStatus = data.living_room_lights;
-            humidity = data.humidity;
-            thermostateData = thermostateTemperature + ' ' + thermostateStatus;
+            // humidity = data.humidity;
+            // thermostateData = thermostateTemperature + ' ' + thermostateStatus;
             var currentDate = new Date();
             var currentDay = strPad(currentDate.getDate());
             var currentMonth = strPad(currentDate.getMonth()+1);
             var currentYear = currentDate.getFullYear().toString().substr(-2);
             var currentDateString = currentDay + '/' + currentMonth + '/' + currentYear;
-            mainCard.body('   ' + currentDateString + '\n\nLights\nUp:  ' + upstairsLightsStatus + '\nDow: ' + downstairsLightsStatus + '\n\nThermostate\nNow: ' + temperature + '\nSet: ' + thermostateData);
-            console.log('\nNow: ' + temperature + '\nSet: ' + thermostateData + '\nUp:  ' + upstairsLightsStatus + '\nDow: ' + downstairsLightsStatus);
+            mainCard.body('   ' + currentDateString + '\n\nLights\nUp:  ' + upstairsLightsStatus + '\nDow: ' + downstairsLightsStatus);
+            // mainCard.body('   ' + currentDateString + '\n\nLights\nUp:  ' + upstairsLightsStatus + '\nDow: ' + downstairsLightsStatus + '\n\nThermostate\nNow: ' + temperature + '\nSet: ' + thermostateData);
+            // console.log('\nNow: ' + temperature + '\nSet: ' + thermostateData + '\nUp:  ' + upstairsLightsStatus + '\nDow: ' + downstairsLightsStatus);
+            console.log('\nNow: ' + temperature + '\nUp:  ' + upstairsLightsStatus + '\nDow: ' + downstairsLightsStatus);
             return data;
         }
     );
