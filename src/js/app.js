@@ -1,9 +1,9 @@
 /**
  * Home Assistant
- * 
+ *
  * This Pebble App displays and changes
  * Homeassistant data
- * 
+ *
  * Davide Nastri, 11/16/2017
  */
 
@@ -19,9 +19,6 @@ var thermostateStatus;
 var upstairsLightsStatus;
 var downstairsLightsStatus;
 var thermostateData;
-var splashScreen = new UI.Card({
-    banner: 'images/splash.png'
-});
 var ajax = require('ajax');
 
 var updateDataUrl = 'UPDATE_DATA_URL';
@@ -29,6 +26,8 @@ var homeAssistantUrl = 'HOME_ASSISTANT_URL';
 var particleDeviceID = 'PARTICLE_DEVICE_ID';
 var particleTokenID = 'PARTICLE_TOKEN_ID';
 var homeAssistantHeaders = "HOME_ASSISTANT_HEADERS";
+
+var splashScreen = new UI.Card({ banner: 'images/splash.png' });
 
 var mainCard = new UI.Card({
     //title: 'Home Assistant',
@@ -171,7 +170,7 @@ thermostateMenu.on('select', function(e) {
             newThermostateTemperature = newThermostateTemperature + 0.5;
             console.log('Current temp: ' + String(thermostateTemperature));
             console.log('New temp: ' + String(newThermostateTemperature));
-            homeAssistantAjaxCall('climate', 'set_temperature', {               
+            homeAssistantAjaxCall('climate', 'set_temperature', {
               "entity_id": "climate.toon_van_eneco",
               "temperature": String(newThermostateTemperature)
             });
@@ -385,12 +384,12 @@ function parseVoiceInputText(textString) {
                 homeAssistantAjaxCall('light', 'toggle', {
                     "entity_id": "light.tv"
                 });
-                break;          
+                break;
             case ((verb === 'accendi' || verb === 'spegni') && (object === 'luce') && (location === 'divano')):
                 homeAssistantAjaxCall('light', 'toggle', {
                     "entity_id": "light.lamp"
                 });
-                break;          
+                break;
           default:
                 showMessage('Non capisco', 'Ecco alcuni esempi', 'Attiva la scena gaming\nAccendi le luci in soggiorno\nAccendi le luci in camera da letto');
                 break;
@@ -412,6 +411,6 @@ splashScreen.show();
 
 
 // Set Interval Snippet
-//setInterval(function(){ 
+//setInterval(function(){
 //  updateData();
 //}, 5000);
